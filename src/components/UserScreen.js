@@ -30,11 +30,12 @@ export default class UserScreen extends Component {
     return (
       <View
         style={{
-          alignItems: 'center'
+          alignItems: 'center',
+          marginTop: 40
         }}
       >
       <Modal
-        animationType={'fade'}
+        animationType={'slide'}
         transparent={false}
         visible={this.state.modalVisible}
         onRequestClose={() => console.log('android is required')}
@@ -53,7 +54,6 @@ export default class UserScreen extends Component {
       </Modal>
       <Button
         onPress={() => this.setModalVisible(true)}
-        style={{padding: 20}}
         title={'打开弹窗'}
       />
       </View>

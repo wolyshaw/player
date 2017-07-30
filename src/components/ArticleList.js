@@ -12,15 +12,15 @@ import {
 } from 'react-navigation'
 
 const List = props => {
-  const { navigate, i } = props
+  const { navigate, item } = props
   return (
-    <TouchableOpacity onPress={() => navigate('ArticleItem', {id: i})}>
+    <TouchableOpacity onPress={() => navigate('ArticleItem', { id: item.id })}>
       <View style={{
         backgroundColor: '#ccc',
         margin: 10,
         padding: 20
       }}>
-        <Text>{i}</Text>
+        <Text>{ item.title }</Text>
       </View>
     </TouchableOpacity>
   )
@@ -30,13 +30,22 @@ export default class ArticleList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isRefreshing: false
+      isRefreshing: false,
+      articles: []
     }
+  }
+
+  componentWillMount() {
+    fetch('http://localhost:4000/front/article/list', {
+      method: 'post'
+    })
+      .then(res => res.json())
+      .then(r => this.setState({ articles: r.list.rows }))
   }
 
   render() {
     const { navigate } = this.props.navigation
-    const list = Array.from(new Array(20)).map((item, i) => <List key={i} navigate={navigate} i={i}/>)
+    const list = this.state.articles.map(item => <List key={item.id} navigate={navigate} item={ item }/>)
     return (
       <View>
         <ScrollView
